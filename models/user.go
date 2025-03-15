@@ -6,11 +6,12 @@ import "time"
 Define use model
 */
 type User struct {
-	ID          string    `json:"id"`          // DID
-	Handle      string    `json:"handle"`      // user name
-	DisplayName string    `json:"displayName"` // display name
-	Avatar      string    `json:"avatar,omitempty"`
-	Password    string    `json:"-"`
-	CreatedAt   time.Time `json:"createdAt"`
-	UpdatedAt   time.Time `json:"updatedAt"`
+	ID          int       `json:"-" db:"id"`                     // user table PK
+	DID         string    `json:"did" db:"did"`                  // DID from ATProtocol
+	Handle      string    `json:"handle" db:"handle"`            // user name
+	DisplayName string    `json:"displayName" db:"display_name"` // display name
+	Avatar      string    `json:"avatar,omitempty" db:"avatar"`
+	Password    string    `json:"-" db:"password"` // hashed password
+	CreatedAt   time.Time `json:"createdAt" db:"created_at"`
+	UpdatedAt   time.Time `json:"updatedAt" db:"updated_at"`
 }
