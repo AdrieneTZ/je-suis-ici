@@ -12,12 +12,15 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - checkin-network
 
   app:
     build:
@@ -34,9 +37,17 @@ services:
       DB_PASSWORD: postgres
       DB_NAME: checkin_db
       DB_SSLMODE: disable
+      SERVER_ADDR: :8080
+    ports:
+      - "8080:8080"
     stdin_open: true
     tty: true
     restart: unless-stopped
+    networks:
+      - checkin-network
+networks:
+  checkin-network:
+    driver: bridge
 
 volumes:
   postgres_data:
